@@ -1,4 +1,9 @@
 # Application of the ADMM Algorithm for a High-Dimensional Partially Linear Model
+## **Team Members:** 
+1. Kiruthika (CB.SC.U4AIE24329) 
+2. Mithul Pranav (CB.SC.U4AIE24331)
+3. Maalika P (CB.SC.U4AIE24332)
+4. Rithan S (CB.SC.U4AIE24348)
 
 ## Introduction
 
@@ -29,9 +34,7 @@ The main objectives of the project are:
 
 Let $Y \in \mathbb{R}^n$ denote the response vector, let $X \in \mathbb{R}^{n \times p}$ denote the matrix of linear predictors, and let $Z$ denote a predictor whose effect is assumed to be smooth but unknown. If the nonlinear effect is approximated through a spline basis matrix $B \in \mathbb{R}^{n \times q}$, then the partially linear model takes the matrix form
 
-$$
-Y = X\beta + B\gamma + \varepsilon,
-$$
+$$Y = X\beta + B\gamma + \varepsilon,$$
 
 where:
 
@@ -41,9 +44,7 @@ where:
 
 In addition to ordinary least-squares fitting, prior structural information is imposed through linear equality constraints
 
-$$
-R\beta = d,
-$$
+$$R\beta = d,$$
 
 where:
 
@@ -53,11 +54,7 @@ where:
 
 The estimation problem is therefore
 
-$$
-\min_{\beta,\gamma}\ \frac{1}{2}\|Y - X\beta - B\gamma\|_2^2
-\quad \text{subject to} \quad
-R\beta = d.
-$$
+$$\min_{\beta,\gamma}\ \frac{1}{2}\|Y - X\beta - B\gamma\|_2^2 \quad \text{subject to} \quad R\beta = d.$$
 
 In the implementation, the matrix $R$ is constructed from consecutive-difference rows so that selected groups of coefficients are forced to be equal. This transforms the regression task into a constrained convex optimization problem, for which ADMM provides a convenient decomposition into smaller subproblems with closed-form updates.
 
@@ -82,9 +79,7 @@ In the implementation, the matrix $R$ is constructed from consecutive-difference
 
 The CPS 1985 dataset contains 534 observations describing workers' wages and personal or occupational characteristics. In the implementation, the response variable is transformed as
 
-$$
-Y = \log(\text{wage}),
-$$
+$$Y = \log(\text{wage}),$$
 
 which reduces scale imbalance, moderates the influence of extreme wage values, and is consistent with standard econometric practice for wage modeling.
 
@@ -142,9 +137,7 @@ The notation below is aligned with the mathematical formulation used in the refe
 
 Let the observed sample be
 
-$$
-\{(Y_i, X_i, Z_i)\}_{i=1}^n,
-$$
+$$\{(Y_i, X_i, Z_i)\}_{i=1}^n,$$
 
 where:
 
@@ -154,59 +147,31 @@ where:
 
 The stacked response vector is
 
-$$
-Y = (Y_1,\ldots,Y_n)^\top \in \mathbb{R}^n,
-$$
+$$Y = (Y_1,\ldots,Y_n)^\top \in \mathbb{R}^n,$$
 
 the linear design matrix is
 
-$$
-X =
-\begin{bmatrix}
-X_1^\top \\
-X_2^\top \\
-\vdots \\
-X_n^\top
-\end{bmatrix}
-\in \mathbb{R}^{n \times p},
-$$
+$$X = \begin{bmatrix} X_1^\top \\ X_2^\top \\ \vdots \\ X_n^\top \end{bmatrix} \in \mathbb{R}^{n \times p},$$
 
 and the parametric coefficient vector is
 
-$$
-\beta = (\beta_1,\ldots,\beta_p)^\top \in \mathbb{R}^p.
-$$
+$$\beta = (\beta_1,\ldots,\beta_p)^\top \in \mathbb{R}^p.$$
 
 For the non-parametric part, the base paper writes the smooth component in terms of spline basis functions. If $q$ basis functions are used, then for each observation $Z_i$ we define the basis-evaluation vector
 
-$$
-b(Z_i) = \big(B_1(Z_i),\ldots,B_q(Z_i)\big)^\top \in \mathbb{R}^q.
-$$
+$$b(Z_i) = \bigl(B_1(Z_i),\ldots,B_q(Z_i)\bigr)^\top \in \mathbb{R}^q.$$
 
 Stacking these vectors row-wise gives the basis matrix used in the code:
 
-$$
-B =
-\begin{bmatrix}
-B_1(Z_1) & \cdots & B_q(Z_1) \\
-B_1(Z_2) & \cdots & B_q(Z_2) \\
-\vdots & \ddots & \vdots \\
-B_1(Z_n) & \cdots & B_q(Z_n)
-\end{bmatrix}
-\in \mathbb{R}^{n \times q},
-$$
+$$B = \begin{bmatrix} B_1(Z_1) & \cdots & B_q(Z_1) \\ B_1(Z_2) & \cdots & B_q(Z_2) \\ \vdots & \ddots & \vdots \\ B_1(Z_n) & \cdots & B_q(Z_n) \end{bmatrix} \in \mathbb{R}^{n \times q},$$
 
 and the spline coefficient vector is
 
-$$
-\gamma = (\gamma_1,\ldots,\gamma_q)^\top \in \mathbb{R}^q.
-$$
+$$\gamma = (\gamma_1,\ldots,\gamma_q)^\top \in \mathbb{R}^q.$$
 
 The random error vector is
 
-$$
-\varepsilon = (\varepsilon_1,\ldots,\varepsilon_n)^\top \in \mathbb{R}^n.
-$$
+$$\varepsilon = (\varepsilon_1,\ldots,\varepsilon_n)^\top \in \mathbb{R}^n.$$
 
 The equality-constrained formulation also introduces:
 
@@ -219,23 +184,17 @@ The equality-constrained formulation also introduces:
 
 With this notation, the fitted response is
 
-$$
-\hat{Y} = X\beta + B\gamma,
-$$
+$$\hat{Y} = X\beta + B\gamma,$$
 
 and the residual vector is
 
-$$
-r = Y - X\beta - B\gamma.
-$$
+$$r = Y - X\beta - B\gamma.$$
 
 ### 2. Partially Linear Model
 
 Following the base paper, the partially linear model is written as
 
-$$
-Y_i = X_i^\top \beta + m(Z_i) + \varepsilon_i, \qquad i = 1,\ldots,n,
-$$
+$$Y_i = X_i^\top \beta + m(Z_i) + \varepsilon_i, \qquad i = 1,\ldots,n,$$
 
 where:
 
@@ -247,21 +206,15 @@ This model is called semiparametric because one part of it is linear and one par
 
 To make the model solvable in practice, the unknown smooth function is approximated by a B-spline expansion:
 
-$$
-m(Z_i) \approx \sum_{j=1}^{q} \gamma_j B_j(Z_i).
-$$
+$$m(Z_i) \approx \sum_{j=1}^{q} \gamma_j B_j(Z_i).$$
 
 Hence,
 
-$$
-Y_i \approx X_i^\top \beta + \sum_{j=1}^{q} \gamma_j B_j(Z_i) + \varepsilon_i.
-$$
+$$Y_i \approx X_i^\top \beta + \sum_{j=1}^{q} \gamma_j B_j(Z_i) + \varepsilon_i.$$
 
 Collecting all observations gives
 
-$$
-Y = X\beta + B\gamma + \varepsilon.
-$$
+$$Y = X\beta + B\gamma + \varepsilon.$$
 
 This is the matrix form used by the solver `ADMM_Algorithm.m`.
 
@@ -280,55 +233,33 @@ In simple terms, the unknown smooth function is not estimated directly as one co
 
 Let the knot sequence be
 
-$$
-t_1 \le t_2 \le \cdots \le t_{q+r+1},
-$$
+$$t_1 \le t_2 \le \cdots \le t_{q+r+1},$$
 
 where $r$ denotes the spline degree. If $r=3$, the basis functions are cubic B-splines. The number of basis functions is determined by the knot vector through
 
-$$
-q = (\text{number of knots}) - r - 1.
-$$
+$$q = (\text{number of knots}) - r - 1.$$
 
-The basis functions are defined recursively.
+The basis functions are defined recursively. For degree $0$,
 
-For degree $0$,
-
-$$
-N_{i,0}(x)=
-\begin{cases}
-1, & t_i \le x < t_{i+1}, \\
-0, & \text{otherwise}.
-\end{cases}
-$$
+$$N_{i,0}(x) = \begin{cases} 1, & t_i \le x < t_{i+1}, \\ 0, & \text{otherwise}. \end{cases}$$
 
 For degree $r \ge 1$,
 
-$$
-N_{i,r}(x)
-=
-\frac{x-t_i}{t_{i+r}-t_i}N_{i,r-1}(x)
-+
-\frac{t_{i+r+1}-x}{t_{i+r+1}-t_{i+1}}N_{i+1,r-1}(x),
-$$
+$$N_{i,r}(x) = \frac{x - t_i}{t_{i+r} - t_i}\,N_{i,r-1}(x) + \frac{t_{i+r+1} - x}{t_{i+r+1} - t_{i+1}}\,N_{i+1,r-1}(x)$$
 
 where any term with zero denominator is interpreted as zero. This recursive definition is the Cox-de Boor recursion implemented in `bspline_basismatrix.m`.
 
 The smooth component is then approximated by
 
-$$
-m(x) \approx \sum_{j=1}^{q}\gamma_j N_{j,r}(x).
-$$
+$$m(x) \approx \sum_{j=1}^{q}\gamma_j N_{j,r}(x).$$
 
 Each coefficient $\gamma_j$ determines how strongly the corresponding basis function contributes to the final smooth curve. The fitted nonlinear effect is therefore linear in the unknown coefficients even though it is nonlinear as a function of the predictor. This is an important reason why spline-based semiparametric estimation can still be solved by linear-algebraic optimization methods.
 
 For the $n$ observed values of the nonlinear predictor, the basis matrix is
 
-$$
-B_{ij} = N_{j,r}(Z_i), \qquad i=1,\ldots,n,\ j=1,\ldots,q.
-$$
+$$B_{ij} = N_{j,r}(Z_i), \qquad i=1,\ldots,n,\ j=1,\ldots,q.$$
 
-Thus, the $i$ th row of $B$ contains all basis evaluations at $Z_i$, and the vector $B\gamma$ gives the smooth fitted contribution across the full sample.
+Thus, the $i$th row of $B$ contains all basis evaluations at $Z_i$, and the vector $B\gamma$ gives the smooth fitted contribution across the full sample.
 
 The function `bspline_basismatrix.m` constructs exactly this matrix. In the live script:
 
@@ -338,15 +269,11 @@ The function `bspline_basismatrix.m` constructs exactly this matrix. In the live
 
 In the main CPS regression sections, the knot vectors are chosen with repeated boundary knots only:
 
-$$
-[\,\min(Z),\min(Z),\min(Z),\max(Z),\max(Z),\max(Z)\,].
-$$
+$$[\,\min(Z),\min(Z),\min(Z),\max(Z),\max(Z),\max(Z)\,].$$
 
 With degree $r=3$, the number of basis functions is
 
-$$
-q = 6 - 3 - 1 = 2.
-$$
+$$q = 6 - 3 - 1 = 2.$$
 
 Hence, in the main CPS regression experiments, each nonlinear variable is represented by a compact two-column spline basis. In `degreeNL.m`, the knot sequence is richer because interior quantiles are added, allowing a more expressive spline fit for nonlinearity diagnosis.
 
@@ -354,50 +281,23 @@ Hence, in the main CPS regression experiments, each nonlinear variable is repres
 
 Once the smooth term is written as a spline expansion, estimation is based on least squares. The unconstrained objective is
 
-$$
-\min_{\beta,\gamma}\ \frac{1}{2}\|Y - X\beta - B\gamma\|_2^2.
-$$
+$$\min_{\beta,\gamma}\ \frac{1}{2}\|Y - X\beta - B\gamma\|_2^2.$$
 
 The base paper and this project incorporate prior information through linear equality constraints:
 
-$$
-R\beta = d.
-$$
+$$R\beta = d.$$
 
 Thus the constrained partially linear estimation problem becomes
 
-$$
-\min_{\beta,\gamma}\ \frac{1}{2}\|Y - X\beta - B\gamma\|_2^2
-\quad \text{subject to} \quad
-R\beta = d.
-$$
+$$\min_{\beta,\gamma}\ \frac{1}{2}\|Y - X\beta - B\gamma\|_2^2 \quad \text{subject to} \quad R\beta = d.$$
 
-In the code, the rows of $R$ are typically chosen in the form
+In the code, the rows of $R$ are typically chosen in the form $(0,\ldots,0,1,-1,0,\ldots,0)$, which enforces $\beta_j - \beta_{j+1} = 0$. This relation does not constrain only one pair in isolation. Because several such rows are stacked together, they form a chain of equalities. For example, if the constraint matrix contains the rows corresponding to
 
-$$
-(0,\ldots,0,1,-1,0,\ldots,0),
-$$
-
-which enforces
-
-$$
-\beta_j - \beta_{j+1} = 0.
-$$
-
-This relation does not constrain only one pair in isolation. Because several such rows are stacked together, they form a chain of equalities. For example, if the constraint matrix contains the rows corresponding to
-
-$$
-\beta_s - \beta_{s+1}=0,\qquad
-\beta_{s+1} - \beta_{s+2}=0,\qquad
-\ldots,\qquad
-\beta_{p-1} - \beta_p = 0,
-$$
+$$\beta_s - \beta_{s+1}=0,\qquad \beta_{s+1} - \beta_{s+2}=0,\qquad \ldots,\qquad \beta_{p-1} - \beta_p = 0,$$
 
 then all coefficients from index $s$ onward must satisfy
 
-$$
-\beta_s = \beta_{s+1} = \cdots = \beta_p.
-$$
+$$\beta_s = \beta_{s+1} = \cdots = \beta_p.$$
 
 This is the precise sense in which a block of coefficients is forced to be equal.
 
@@ -418,33 +318,19 @@ This distinction is important for understanding what the code actually estimates
 
 For a general constrained problem
 
-$$
-\min_{x,z}\ f(x) + g(z)
-\quad \text{subject to} \quad
-Ax + Cz = c,
-$$
+$$\min_{x,z}\ f(x) + g(z) \quad \text{subject to} \quad Ax + Cz = c,$$
 
 the augmented Lagrangian is
 
-$$
-\mathcal{L}_\rho(x,z,\lambda)
-=
-f(x) + g(z) + \lambda^\top(Ax + Cz - c) + \frac{\rho}{2}\|Ax + Cz - c\|_2^2.
-$$
+$$\mathcal{L}_\rho(x,z,\lambda) = f(x) + g(z) + \lambda^\top(Ax + Cz - c) + \frac{\rho}{2}\|Ax + Cz - c\|_2^2.$$
 
 ADMM alternates between minimization with respect to one block variable, then the other, and finally updates the dual variable:
 
-$$
-x^{k+1} = \arg\min_x \mathcal{L}_\rho(x,z^k,\lambda^k),
-$$
+$$x^{k+1} = \underset{x}{\mathrm{arg\,min}}\ \mathcal{L}_\rho(x,z^k,\lambda^k),$$
 
-$$
-z^{k+1} = \arg\min_z \mathcal{L}_\rho(x^{k+1},z,\lambda^k),
-$$
+$$z^{k+1} = \underset{z}{\mathrm{arg\,min}}\ \mathcal{L}_\rho(x^{k+1},z,\lambda^k),$$
 
-$$
-\lambda^{k+1} = \lambda^k + \rho(Ax^{k+1} + Cz^{k+1} - c).
-$$
+$$\lambda^{k+1} = \lambda^k + \rho(Ax^{k+1} + Cz^{k+1} - c).$$
 
 In this project, ADMM is useful because it breaks one large constrained problem into smaller steps with direct least-squares updates.
 
@@ -454,272 +340,133 @@ In this project, ADMM is useful because it breaks one large constrained problem 
 
 This is the model implemented in `ADMM_Algorithm.m`:
 
-$$
-\min_{\beta,\gamma}\ \frac{1}{2}\|Y - X\beta - B\gamma\|_2^2
-\quad \text{subject to} \quad
-R\beta = d.
-$$
+$$\min_{\beta,\gamma}\ \frac{1}{2}\|Y - X\beta - B\gamma\|_2^2 \quad \text{subject to} \quad R\beta = d.$$
 
 The augmented Lagrangian is
 
-$$
-\mathcal{L}_\rho(\beta,\gamma,\lambda)
-=
-\frac{1}{2}\|Y - X\beta - B\gamma\|_2^2
-+ \lambda^\top(R\beta - d)
-+ \frac{\rho}{2}\|R\beta - d\|_2^2.
-$$
+$$\begin{aligned} \mathcal{L}_\rho(\beta,\gamma,\lambda) &= \frac{1}{2}\|Y - X\beta - B\gamma\|_2^2 \\ &\quad + \lambda^\top(R\beta - d) + \frac{\rho}{2}\|R\beta - d\|_2^2. \end{aligned}$$
 
 For fixed $(\beta^k,\lambda^k)$, the $\gamma$-subproblem is
 
-$$
-\gamma^{k+1}
-=
-\arg\min_\gamma \frac{1}{2}\|Y - X\beta^k - B\gamma\|_2^2.
-$$
+$$\gamma^{k+1} = \underset{\gamma}{\mathrm{arg\,min}}\ \frac{1}{2}\|Y - X\beta^k - B\gamma\|_2^2.$$
 
 Taking the derivative with respect to $\gamma$ gives
 
-$$
--B^\top(Y - X\beta^k - B\gamma)=0.
-$$
+$$-B^\top(Y - X\beta^k - B\gamma) = 0.$$
 
 Therefore,
 
-$$
-B^\top B\,\gamma = B^\top(Y - X\beta^k),
-$$
+$$B^\top B\,\gamma = B^\top(Y - X\beta^k),$$
 
 and hence
 
-$$
-\gamma^{k+1} = (B^\top B)^\dagger B^\top(Y - X\beta^k).
-$$
+$$\gamma^{k+1} = (B^\top B)^\dagger\, B^\top(Y - X\beta^k).$$
 
 For fixed $(\gamma^{k+1},\lambda^k)$, the $\beta$-subproblem is
 
-$$
-\beta^{k+1}
-=
-\arg\min_\beta
-\left[
-\frac{1}{2}\|Y - X\beta - B\gamma^{k+1}\|_2^2
-+ \lambda^{k\top}(R\beta - d)
-+ \frac{\rho}{2}\|R\beta - d\|_2^2
-\right].
-$$
+$$\begin{aligned} \beta^{k+1} = \underset{\beta}{\mathrm{arg\,min}} \Bigl[&\frac{1}{2}\|Y - X\beta - B\gamma^{k+1}\|_2^2 \\ &+ (\lambda^k)^\top(R\beta - d) + \frac{\rho}{2}\|R\beta - d\|_2^2 \Bigr]. \end{aligned}$$
 
 Differentiating with respect to $\beta$,
 
-$$
--X^\top(Y - X\beta - B\gamma^{k+1})
-+ R^\top\lambda^k
-+ \rho R^\top(R\beta - d)=0.
-$$
+$$-X^\top(Y - X\beta - B\gamma^{k+1}) + R^\top\lambda^k + \rho R^\top(R\beta - d) = 0.$$
 
 Rearranging,
 
-$$
-(X^\top X + \rho R^\top R)\beta
-=
-X^\top(Y - B\gamma^{k+1}) + R^\top(\rho d - \lambda^k).
-$$
+$$(X^\top X + \rho R^\top R)\beta = X^\top(Y - B\gamma^{k+1}) + R^\top(\rho d - \lambda^k).$$
 
 Thus,
 
-$$
-\beta^{k+1}
-=
-(X^\top X + \rho R^\top R)^\dagger
-\left[X^\top(Y - B\gamma^{k+1}) + R^\top(\rho d - \lambda^k)\right].
-$$
+$$\beta^{k+1} = (X^\top X + \rho R^\top R)^\dagger \bigl[X^\top(Y - B\gamma^{k+1}) + R^\top(\rho d - \lambda^k)\bigr].$$
 
 The dual update is
 
-$$
-\lambda^{k+1} = \lambda^k + \rho(R\beta^{k+1} - d).
-$$
+$$\lambda^{k+1} = \lambda^k + \rho(R\beta^{k+1} - d).$$
 
 Therefore, the final ADMM iteration is
 
-$$
-\boxed{
-\begin{aligned}
-\gamma^{k+1}
-&= (B^\top B)^\dagger B^\top(Y - X\beta^k), \\
-\beta^{k+1}
-&= (X^\top X + \rho R^\top R)^\dagger
-\left[X^\top(Y - B\gamma^{k+1}) + R^\top(\rho d - \lambda^k)\right], \\
-\lambda^{k+1}
-&= \lambda^k + \rho(R\beta^{k+1} - d).
-\end{aligned}
-}
-$$
+$$\boxed{\begin{aligned} \gamma^{k+1} &= (B^\top B)^\dagger\, B^\top(Y - X\beta^k), \\ \beta^{k+1} &= (X^\top X + \rho R^\top R)^\dagger \bigl[X^\top(Y - B\gamma^{k+1}) + R^\top(\rho d - \lambda^k)\bigr], \\ \lambda^{k+1} &= \lambda^k + \rho(R\beta^{k+1} - d). \end{aligned}}$$
 
 #### Case B. Constrained Linear Model
 
 This is the model implemented in `ADMM_Algorithm_Linear.m`:
 
-$$
-\min_{\beta}\ \frac{1}{2}\|Y - X\beta\|_2^2
-\quad \text{subject to} \quad
-R\beta = d.
-$$
+$$\min_{\beta}\ \frac{1}{2}\|Y - X\beta\|_2^2 \quad \text{subject to} \quad R\beta = d.$$
 
 The augmented Lagrangian is
 
-$$
-\mathcal{L}_\rho(\beta,\lambda)
-=
-\frac{1}{2}\|Y - X\beta\|_2^2
-+ \lambda^\top(R\beta - d)
-+ \frac{\rho}{2}\|R\beta - d\|_2^2.
-$$
+$$\begin{aligned} \mathcal{L}_\rho(\beta,\lambda) &= \frac{1}{2}\|Y - X\beta\|_2^2 \\ &\quad + \lambda^\top(R\beta - d) + \frac{\rho}{2}\|R\beta - d\|_2^2. \end{aligned}$$
 
 The $\beta$-update solves
 
-$$
-\beta^{k+1}
-=
-\arg\min_\beta
-\left[
-\frac{1}{2}\|Y - X\beta\|_2^2
-+ \lambda^{k\top}(R\beta - d)
-+ \frac{\rho}{2}\|R\beta - d\|_2^2
-\right].
-$$
+$$\begin{aligned} \beta^{k+1} = \underset{\beta}{\mathrm{arg\,min}} \Bigl[&\frac{1}{2}\|Y - X\beta\|_2^2 \\ &+ (\lambda^k)^\top(R\beta - d) + \frac{\rho}{2}\|R\beta - d\|_2^2 \Bigr]. \end{aligned}$$
 
 Differentiating and setting the gradient to zero:
 
-$$
--X^\top(Y - X\beta)
-+ R^\top\lambda^k
-+ \rho R^\top(R\beta - d)=0.
-$$
+$$-X^\top(Y - X\beta) + R^\top\lambda^k + \rho R^\top(R\beta - d) = 0.$$
 
 So
 
-$$
-(X^\top X + \rho R^\top R)\beta
-=
-X^\top Y + R^\top(\rho d - \lambda^k).
-$$
+$$(X^\top X + \rho R^\top R)\beta = X^\top Y + R^\top(\rho d - \lambda^k).$$
 
 Hence,
 
-$$
-\beta^{k+1}
-=
-(X^\top X + \rho R^\top R)^\dagger
-\left[X^\top Y + R^\top(\rho d - \lambda^k)\right].
-$$
+$$\beta^{k+1} = (X^\top X + \rho R^\top R)^\dagger \bigl[X^\top Y + R^\top(\rho d - \lambda^k)\bigr].$$
 
 The dual step is
 
-$$
-\lambda^{k+1} = \lambda^k + \rho(R\beta^{k+1} - d).
-$$
+$$\lambda^{k+1} = \lambda^k + \rho(R\beta^{k+1} - d).$$
 
 The MATLAB implementation uses an equivalent rearrangement:
 
-$$
-\beta^{k+1}
-=
-(X^\top X + \rho R^\top R)^\dagger
-\left[X^\top Y + \rho R^\top\left(d + \frac{\lambda^k}{\rho}\right)\right].
-$$
+$$\beta^{k+1} = (X^\top X + \rho R^\top R)^\dagger \left[X^\top Y + \rho R^\top\\left(d - \frac{\lambda^k}{\rho}\right)\right].$$
 
 #### Case C. Constrained Nonlinear-Only Model
 
 This is the model implemented in `ADMM_Algorithm_NonLinear.m`:
 
-$$
-\min_{\gamma}\ \frac{1}{2}\|Y - B\gamma\|_2^2
-\quad \text{subject to} \quad
-R\gamma = d.
-$$
+$$\min_{\gamma}\ \frac{1}{2}\|Y - B\gamma\|_2^2 \quad \text{subject to} \quad R\gamma = d.$$
 
 The augmented Lagrangian is
 
-$$
-\mathcal{L}_\rho(\gamma,\lambda)
-=
-\frac{1}{2}\|Y - B\gamma\|_2^2
-+ \lambda^\top(R\gamma - d)
-+ \frac{\rho}{2}\|R\gamma - d\|_2^2.
-$$
+$$\begin{aligned} \mathcal{L}_\rho(\gamma,\lambda) &= \frac{1}{2}\|Y - B\gamma\|_2^2 \\ &\quad + \lambda^\top(R\gamma - d) + \frac{\rho}{2}\|R\gamma - d\|_2^2. \end{aligned}$$
 
 The $\gamma$-subproblem is
 
-$$
-\gamma^{k+1}
-=
-\arg\min_\gamma
-\left[
-\frac{1}{2}\|Y - B\gamma\|_2^2
-+ \lambda^{k\top}(R\gamma - d)
-+ \frac{\rho}{2}\|R\gamma - d\|_2^2
-\right].
-$$
+$$\begin{aligned} \gamma^{k+1} = \underset{\gamma}{\mathrm{arg\,min}} \Bigl[&\frac{1}{2}\|Y - B\gamma\|_2^2 \\ &+ (\lambda^k)^\top(R\gamma - d) + \frac{\rho}{2}\|R\gamma - d\|_2^2 \Bigr]. \end{aligned}$$
 
 Taking the derivative:
 
-$$
--B^\top(Y - B\gamma)
-+ R^\top\lambda^k
-+ \rho R^\top(R\gamma - d)=0.
-$$
+$$-B^\top(Y - B\gamma) + R^\top\lambda^k + \rho R^\top(R\gamma - d) = 0.$$
 
 Therefore,
 
-$$
-(B^\top B + \rho R^\top R)\gamma
-=
-B^\top Y + R^\top(\rho d - \lambda^k),
-$$
+$$(B^\top B + \rho R^\top R)\gamma = B^\top Y + R^\top(\rho d - \lambda^k),$$
 
 and
 
-$$
-\gamma^{k+1}
-=
-(B^\top B + \rho R^\top R)^\dagger
-\left[B^\top Y + R^\top(\rho d - \lambda^k)\right].
-$$
+$$\gamma^{k+1} = (B^\top B + \rho R^\top R)^\dagger \bigl[B^\top Y + R^\top(\rho d - \lambda^k)\bigr].$$
 
 The dual update is
 
-$$
-\lambda^{k+1} = \lambda^k + \rho(R\gamma^{k+1} - d).
-$$
+$$\lambda^{k+1} = \lambda^k + \rho(R\gamma^{k+1} - d).$$
 
 #### Case D. Unconstrained Linear Model
 
 This is the model implemented in `ADMM_Algorithm_Linear_Uncons.m`:
 
-$$
-\min_{\beta}\ \frac{1}{2}\|Y - X\beta\|_2^2.
-$$
+$$\min_{\beta}\ \frac{1}{2}\|Y - X\beta\|_2^2.$$
 
 Since there is no constraint, the first-order optimality condition is simply
 
-$$
--X^\top(Y - X\beta)=0.
-$$
+$$-X^\top(Y - X\beta) = 0.$$
 
 Hence,
 
-$$
-X^\top X\,\beta = X^\top Y,
-$$
+$$X^\top X\,\beta = X^\top Y,$$
 
 and the closed-form solution is
 
-$$
-\boxed{
-\beta^\star = (X^\top X)^\dagger X^\top Y
-}
-$$
+$$\boxed{\beta^\star = (X^\top X)^\dagger X^\top Y}$$
 
 This is ordinary least squares computed by the Moore-Penrose pseudoinverse.
 
@@ -749,17 +496,7 @@ The toy data are:
 
 Thus the response vector is
 
-$$
-Y =
-\begin{bmatrix}
-2.10 \\
-2.25 \\
-2.40 \\
-2.58 \\
-2.73 \\
-2.90
-\end{bmatrix}.
-$$
+$$Y = \begin{bmatrix} 2.10 \\ 2.25 \\ 2.40 \\ 2.58 \\ 2.73 \\ 2.90 \end{bmatrix}.$$
 
 #### Step 2. Decide which variables are linear and which are nonlinear
 
@@ -783,298 +520,81 @@ This means:
 
 Using the linear variables, the design matrix is
 
-$$
-X =
-\begin{bmatrix}
-10 & 22 & 0 & 0 & 0 \\
-11 & 24 & 1 & 0 & 0 \\
-12 & 27 & 0 & 1 & 0 \\
-13 & 31 & 1 & 1 & 0 \\
-14 & 36 & 0 & 1 & 1 \\
-15 & 41 & 1 & 1 & 1
-\end{bmatrix},
-$$
+$$X = \begin{bmatrix} 10 & 22 & 0 & 0 & 0 \\ 11 & 24 & 1 & 0 & 0 \\ 12 & 27 & 0 & 1 & 0 \\ 13 & 31 & 1 & 1 & 0 \\ 14 & 36 & 0 & 1 & 1 \\ 15 & 41 & 1 & 1 & 1 \end{bmatrix},$$
 
-with column order
+with column order $[\text{education},\ \text{age},\ \text{gender},\ \text{union},\ \text{married}]$. So the coefficient vector is
 
-$$
-[\text{education},\ \text{age},\ \text{gender},\ \text{union},\ \text{married}].
-$$
+$$\beta = \begin{bmatrix} \beta_1 \\ \beta_2 \\ \beta_3 \\ \beta_4 \\ \beta_5 \end{bmatrix}.$$
 
-So the coefficient vector is
+Each row of $X$ contains the linear information for one observation. For example, the fourth row $[13,\ 31,\ 1,\ 1,\ 0]$ means education = 13, age = 31, gender = 1, union = 1, married = 0. Its linear contribution to the fitted value is therefore
 
-$$
-\beta =
-\begin{bmatrix}
-\beta_1 \\
-\beta_2 \\
-\beta_3 \\
-\beta_4 \\
-\beta_5
-\end{bmatrix}.
-$$
-
-Each row of $X$ contains the linear information for one observation. For example, the fourth row
-
-$$
-[13,\ 31,\ 1,\ 1,\ 0]
-$$
-
-means:
-
-- education = 13,
-- age = 31,
-- gender = 1,
-- union = 1,
-- married = 0.
-
-Its linear contribution to the fitted value is therefore
-
-$$
-13\beta_1 + 31\beta_2 + \beta_3 + \beta_4.
-$$
+$$13\beta_1 + 31\beta_2 + \beta_3 + \beta_4.$$
 
 #### Step 4. Construct the nonlinear variable vector and spline basis matrix $B$
 
 The nonlinear predictor is
 
-$$
-Z =
-\begin{bmatrix}
-0 \\ 2 \\ 5 \\ 9 \\ 14 \\ 20
-\end{bmatrix},
-$$
+$$Z = \begin{bmatrix} 0 \\ 2 \\ 5 \\ 9 \\ 14 \\ 20 \end{bmatrix},$$
 
-which represents experience.
+which represents experience. The code then chooses $r=3$ for a cubic spline, and the knot vector
 
-The code then chooses:
+$$t = [\min(Z),\min(Z),\min(Z),\max(Z),\max(Z),\max(Z)] = [0,0,0,20,20,20].$$
 
-$$
-r=3
-$$
+Since there are 6 knots and degree 3, the basis size is $q = 6 - 3 - 1 = 2$. So `bspline_basismatrix.m` creates a matrix with two spline columns:
 
-for a cubic spline, and the knot vector
-
-$$
-t = [\min(Z),\min(Z),\min(Z),\max(Z),\max(Z),\max(Z)]
-= [0,0,0,20,20,20].
-$$
-
-Since there are 6 knots and degree 3, the basis size is
-
-$$
-q = 6 - 3 - 1 = 2.
-$$
-
-So `bspline_basismatrix.m` creates a matrix with two spline columns:
-
-$$
-B =
-\begin{bmatrix}
-B_1(0) & B_2(0) \\
-B_1(2) & B_2(2) \\
-B_1(5) & B_2(5) \\
-B_1(9) & B_2(9) \\
-B_1(14) & B_2(14) \\
-B_1(20) & B_2(20)
-\end{bmatrix}.
-$$
+$$B = \begin{bmatrix} B_1(0) & B_2(0) \\ B_1(2) & B_2(2) \\ B_1(5) & B_2(5) \\ B_1(9) & B_2(9) \\ B_1(14) & B_2(14) \\ B_1(20) & B_2(20) \end{bmatrix}.$$
 
 Using the current spline routine, the interior rows are approximately
 
-$$
-B \approx
-\begin{bmatrix}
-0      & 0      \\
-0.2430 & 0.0270 \\
-0.4219 & 0.1406 \\
-0.4084 & 0.3341 \\
-0.1890 & 0.4410 \\
-0      & 0
-\end{bmatrix}.
-$$
+$$B \approx \begin{bmatrix} 0 & 0 \\ 0.2430 & 0.0270 \\ 0.4219 & 0.1406 \\ 0.4084 & 0.3341 \\ 0.1890 & 0.4410 \\ 0 & 0 \end{bmatrix}.$$
 
-Hence the spline coefficient vector is
+Hence the spline coefficient vector is $\gamma = (\gamma_1,\ \gamma_2)^\top$, and the nonlinear contribution for the fourth observation is approximately $0.4084\,\gamma_1 + 0.3341\,\gamma_2$. So for observation 4, the full fitted value in the partially linear model is
 
-$$
-\gamma =
-\begin{bmatrix}
-\gamma_1 \\
-\gamma_2
-\end{bmatrix},
-$$
-
-and the nonlinear contribution for the fourth observation is approximately
-
-$$
-0.4084\,\gamma_1 + 0.3341\,\gamma_2.
-$$
-
-So for observation 4, the full fitted value in the partially linear model is
-
-$$
-\hat{Y}_4
-=
-13\beta_1 + 31\beta_2 + \beta_3 + \beta_4 + 0.4084\,\gamma_1 + 0.3341\,\gamma_2.
-$$
+$$\hat{Y}_4 = 13\beta_1 + 31\beta_2 + \beta_3 + \beta_4 + 0.4084\,\gamma_1 + 0.3341\,\gamma_2.$$
 
 This single equation shows exactly what the program is doing: one part of the effect is linear and another part is carried by the spline basis.
 
 #### Step 5. Construct the constraint matrix $R$
 
-Suppose we want the coefficients of `gender`, `union`, and `married` to be equal. In terms of $\beta$, this means
+Suppose we want the coefficients of `gender`, `union`, and `married` to be equal. In terms of $\beta$, this means $\beta_3 = \beta_4 = \beta_5$. The code writes the equivalent chained differences $\beta_3 - \beta_4 = 0$ and $\beta_4 - \beta_5 = 0$, giving
 
-$$
-\beta_3 = \beta_4 = \beta_5.
-$$
+$$R = \begin{bmatrix} 0 & 0 & 1 & -1 & 0 \\ 0 & 0 & 0 & 1 & -1 \end{bmatrix}, \qquad d = \begin{bmatrix} 0 \\ 0 \end{bmatrix}.$$
 
-The code does not write this directly. Instead, it writes the equivalent chained differences:
-
-$$
-\beta_3 - \beta_4 = 0,
-\qquad
-\beta_4 - \beta_5 = 0.
-$$
-
-This gives
-
-$$
-R =
-\begin{bmatrix}
-0 & 0 & 1 & -1 & 0 \\
-0 & 0 & 0 & 1 & -1
-\end{bmatrix},
-\qquad
-d =
-\begin{bmatrix}
-0 \\
-0
-\end{bmatrix}.
-$$
-
-Therefore,
-
-$$
-R\beta = d
-\quad \Longleftrightarrow \quad
-\beta_3 = \beta_4 = \beta_5.
-$$
-
-This is exactly how the real code builds blocks of equal coefficients.
+Therefore $R\beta = d \;\Longleftrightarrow\; \beta_3 = \beta_4 = \beta_5$. This is exactly how the real code builds blocks of equal coefficients.
 
 #### Step 6. Case A: constrained partially linear model
 
-Now all ingredients for `ADMM_Algorithm.m` are ready:
+Now all ingredients for `ADMM_Algorithm.m` are ready: response vector $Y$, linear matrix $X$, spline matrix $B$, and constraint objects $R$ and $d$. The model is
 
-- response vector: $Y$,
-- linear matrix: $X$,
-- spline matrix: $B$,
-- constraint objects: $R$ and $d$.
+$$Y \approx X\beta + B\gamma, \qquad R\beta = d.$$
 
-The model is
-
-$$
-Y \approx X\beta + B\gamma,
-\qquad
-R\beta = d.
-$$
-
-This means:
-
-- the effects of `education`, `age`, `gender`, `union`, and `married` are linear,
-- the effect of `experience` is nonlinear,
-- the last three linear coefficients are forced to be equal.
-
-This is the most important case in the project because it combines interpretability, smooth nonlinear modeling, and equality constraints.
+This means the effects of `education`, `age`, `gender`, `union`, and `married` are linear, the effect of `experience` is nonlinear, and the last three linear coefficients are forced to be equal. This is the most important case in the project because it combines interpretability, smooth nonlinear modeling, and equality constraints.
 
 #### Step 7. Case B: constrained linear-only model
 
-Suppose we decide that `experience` should not be modeled through a spline. Then it is moved directly into the linear matrix:
+Suppose we decide that `experience` should not be modeled through a spline. Then it is moved directly into the linear matrix $X_{\text{lin}} = \bigl[X \;\; Z\bigr]$. Now there is no spline matrix, so the model becomes
 
-$$
-X_{\text{lin}} =
-\big[
-X
-\;\;
-Z
-\big].
-$$
+$$Y \approx X_{\text{lin}}\beta, \qquad R\beta = d.$$
 
-Now there is no spline matrix, so the model becomes
-
-$$
-Y \approx X_{\text{lin}}\beta,
-\qquad
-R\beta = d.
-$$
-
-This is the case solved by `ADMM_Algorithm_Linear.m`. Relative to the previous case, the only change is:
-
-- the nonlinear part disappears,
-- `experience` is forced to have one ordinary linear coefficient,
-- the equality constraints on the chosen block of linear coefficients remain.
-
-So this case asks: what if every predictor is treated as linear?
+This is the case solved by `ADMM_Algorithm_Linear.m`. This case asks: what if every predictor is treated as linear?
 
 #### Step 8. Case C: constrained nonlinear-only model
 
-Now consider the opposite direction. Suppose we remove the separate linear block and collect everything into one large design matrix called $B_{\text{full}}$:
+Now consider the opposite direction. Suppose we collect everything into one large design matrix:
 
-$$
-B_{\text{full}}
-=
-\big[
-B^{(\text{education})}
-\;\;
-B^{(\text{age})}
-\;\;
-B^{(\text{experience})}
-\;\;
-C
-\big],
-$$
+$$B_{\text{full}} = \bigl[ B^{(\text{education})} \; B^{(\text{age})} \; B^{(\text{experience})} \; C \bigr],$$
 
-where:
+where $B^{(\text{education})}$, $B^{(\text{age})}$, $B^{(\text{experience})}$ are spline bases and $C$ is the dummy-variable block. Then the model is
 
-- $B^{(\text{education})}$ is the spline basis for education,
-- $B^{(\text{age})}$ is the spline basis for age,
-- $B^{(\text{experience})}$ is the spline basis for experience,
-- $C$ is the dummy-variable block.
+$$Y \approx B_{\text{full}}\gamma, \qquad R\gamma = d.$$
 
-Then the model is
-
-$$
-Y \approx B_{\text{full}}\gamma,
-\qquad
-R\gamma = d.
-$$
-
-Here there is no $\beta$ vector at all. All coefficients are collected into $\gamma$. The important detail is that the constraints do **not** automatically apply to every column of $B_{\text{full}}$. Instead, the code chooses where the constraints begin. In the live script, the constraint starts at the first categorical column, so:
-
-- the spline coefficients for smooth terms remain free,
-- the trailing categorical coefficients are tied together by chained equalities.
-
-This is the case solved by `ADMM_Algorithm_NonLinear.m`.
+Here there is no $\beta$ vector at all. The constraint starts at the first categorical column, so the spline coefficients remain free while the trailing categorical coefficients are tied together by chained equalities. This is the case solved by `ADMM_Algorithm_NonLinear.m`.
 
 #### Step 9. Case D: unconstrained linear-only model
 
-Finally, remove both the spline part and the constraints. Then the model is simply
+Finally, remove both the spline part and the constraints. Then the model is simply $Y \approx X\beta$, and the solution is ordinary least squares:
 
-$$
-Y \approx X\beta.
-$$
-
-There is:
-
-- no spline basis matrix,
-- no constraint matrix,
-- no dual variable.
-
-The solution is ordinary least squares:
-
-$$
-\beta^\star = (X^\top X)^\dagger X^\top Y.
-$$
+$$\beta^\star = (X^\top X)^\dagger X^\top Y.$$
 
 This is the case solved by `ADMM_Algorithm_Linear_Uncons.m`, and it is the same idea used for the wine experiments.
 
@@ -1103,69 +623,23 @@ The function `degreeNL.m` estimates how strongly a predictor departs from linear
 
 1. Standardize the predictor and center the response:
 
-$$
-\tilde{x}_i = \frac{x_i - \bar{x}}{\operatorname{std}(x)},
-\qquad
-\tilde{y}_i = y_i - \bar{y}.
-$$
+$$\tilde{x}_i = \frac{x_i - \bar{x}}{\mathrm{std}(x)}, \qquad \tilde{y}_i = y_i - \bar{y}.$$
 
-2. Fit the straight-line model
+2. Fit the straight-line model $\tilde{y} \approx a + b\tilde{x}$. If
 
-$$
-\tilde{y} \approx a + b\tilde{x}.
-$$
+$$L = \begin{bmatrix} 1 & \tilde{x}_1 \\  \\ 1 & \tilde{x}_n \end{bmatrix},$$
 
-If
+then the least-squares coefficient is $\hat{\beta}_L = (L^\top L)^\dagger L^\top \tilde{y}$, and the corresponding mean squared error is
 
-$$
-L =
-\begin{bmatrix}
-1 & \tilde{x}_1 \\
-\vdots & \vdots \\
-1 & \tilde{x}_n
-\end{bmatrix},
-$$
+$$\mathrm{MSE}_L = \frac{1}{n}\sum_{i=1}^n\bigl(\tilde{y}_i - \hat{y}^{(L)}_i\bigr)^2.$$
 
-then the least-squares coefficient is
+3. Fit a cubic-spline model $\tilde{y} \approx S\hat{\gamma}$, where $S$ is the spline basis matrix generated from quantile-based knots. Then $\hat{\gamma} = (S^\top S)^\dagger S^\top \tilde{y}$, and
 
-$$
-\hat{\beta}_L = (L^\top L)^\dagger L^\top \tilde{y},
-$$
-
-and the corresponding mean squared error is
-
-$$
-\mathrm{MSE}_L
-=
-\frac{1}{n}\sum_{i=1}^n(\tilde{y}_i - \hat{y}^{(L)}_i)^2.
-$$
-
-3. Fit a cubic-spline model
-
-$$
-\tilde{y} \approx S\hat{\gamma},
-$$
-
-where $S$ is the spline basis matrix generated from quantile-based knots. Then
-
-$$
-\hat{\gamma} = (S^\top S)^\dagger S^\top \tilde{y},
-$$
-
-and
-
-$$
-\mathrm{MSE}_S
-=
-\frac{1}{n}\sum_{i=1}^n(\tilde{y}_i - \hat{y}^{(S)}_i)^2.
-$$
+$$\mathrm{MSE}_S = \frac{1}{n}\sum_{i=1}^n\bigl(\tilde{y}_i - \hat{y}^{(S)}_i\bigr)^2.$$
 
 4. Define the degree of nonlinearity by
 
-$$
-d_{\mathrm{NL}}=
-\max\left(0,\frac{\mathrm{MSE}_L - \mathrm{MSE}_S}{\mathrm{MSE}_L}\right).
-$$
+$$d_{\mathrm{NL}} = \max\\left(0,\\frac{\mathrm{MSE}_L - \mathrm{MSE}_S}{\mathrm{MSE}_L}\right).$$
 
 If this value is close to zero, a linear fit is already adequate. Larger values indicate that the spline fit explains additional structure not captured by a straight line.
 
@@ -1194,17 +668,9 @@ The computational pipeline used in the live script is:
 
 The project reports the following metrics:
 
-$$
-\mathrm{MAE} = \operatorname{median}_i |y_i - \hat{y}_i|,
-$$
+$$\mathrm{MAE} = \underset{i}{\mathrm{median}}\,|y_i - \hat{y}_i|,$$
 
-$$
-\mathrm{RMSE} =
-\sqrt{
-\frac{1}{n_{\text{test}}}
-\sum_{i=1}^{n_{\text{test}}}(y_i - \hat{y}_i)^2
-}.
-$$
+$$\mathrm{RMSE} = \sqrt{\frac{1}{n_{\text{test}}} \sum_{i=1}^{n_{\text{test}}}(y_i - \hat{y}_i)^2}.$$
 
 The MAE provides a robust measure of predictive error, while the RMSE penalizes larger deviations more strongly.
 
